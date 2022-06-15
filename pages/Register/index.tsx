@@ -1,4 +1,5 @@
 import React from 'react';
+import RegisterForm1 from '../../components/registerForm1';
 
 const Register: React.FC = () => {
   return <div style={{
@@ -39,10 +40,7 @@ const Register: React.FC = () => {
           cursor: "pointer"
         }}>Login</span>
       </div>
-      <p style={{
-        fontSize: 26,
-        margin: "14px 0"
-      }}>Dados da empresa</p>
+      <RegisterForm1/>
     </div>
   </div>;
 }
