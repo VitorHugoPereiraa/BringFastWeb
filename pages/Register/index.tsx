@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import RegisterForm1 from '../../components/registerForm1';
+import Button from '../../components/Button';
 
 const Register: React.FC = () => {
+
+  const [step, setStep] = useState(1);
+  const [stepContent, setStepContent] = useState(<></>);
+  const [returnHidden, setReturnHidden] = useState(true);
+
+  useEffect(() => {
+    if(step === 1) {
+      setStepContent(<RegisterForm1 />)
+      setReturnHidden(true)
+    }
+    else if(step != 1) {
+      setReturnHidden(false);
+    }},[step]);
+
   return <div style={{
     display: "flex",
     justifyContent: "center",
@@ -40,7 +55,9 @@ const Register: React.FC = () => {
           cursor: "pointer"
         }}>Login</span>
       </div>
-      <RegisterForm1/>
+      {stepContent}
+      <Button text="Avançar"/>
+      <Button hidden={returnHidden} text="Voltar" color="#009FB7" margin={10}/>
     </div>
   </div>;
 }
