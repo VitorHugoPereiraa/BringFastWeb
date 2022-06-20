@@ -5,11 +5,16 @@ interface Props {
     width?: string | number
     margin?: string | number
     hidden?: boolean
+    callback?: any
     text: string
 }
 
 const Button: React.FC<Props> = (props: Props) => {
   return <input 
+    onClick={()=>{
+      console.log(props.callback)
+      props.callback
+    }}
     type="button" 
     value={props.text}
     style={{
