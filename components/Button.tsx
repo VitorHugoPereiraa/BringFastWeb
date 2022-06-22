@@ -11,10 +11,7 @@ interface Props {
 
 const Button: React.FC<Props> = (props: Props) => {
   return <input 
-    onClick={()=>{
-      console.log(props.callback)
-      props.callback
-    }}
+    onClick={props.callback}
     type="button" 
     value={props.text}
     style={{

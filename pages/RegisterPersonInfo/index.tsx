@@ -5,9 +5,10 @@ import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import Button from '../../components/Button';
+import {useRouter} from 'next/router'
 import { NavigateBefore } from '@mui/icons-material';
 
-const Register: React.FC = () => {
+const RegisterPersonInfo: React.FC = () => {
 
   const [step, setStep] = useState(1);
   const [stepContent, setStepContent] = useState(<></>);
@@ -19,6 +20,8 @@ const Register: React.FC = () => {
   const [personCodeError, setPersonCodeError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
+  
+  const router = useRouter()
 
   const validateEmail = (email) => {
     let validation = /[a-zA-Z0-9]+@[a-zA-Z0-9.-]+\.[a-z]{2,8}(\.[a-z]{2,8})?/;
@@ -29,24 +32,18 @@ const Register: React.FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   switch(step){
-  //     case 1:
-  //       setStepContent(<RegisterForm1 trigger={setStep}/>)
-  //       setReturnHidden(true)
-  //       break
-  //     case 2:
-  //       setStepContent(<RegisterForm2 />)
-  //       setReturnHidden(false)
-  //   }
-  //   // if(step === 1) {
-  //   //   setStepContent(<RegisterForm1 />)
-  //   //   setReturnHidden(true)
-  //   // }
-  //   // else if(step != 1) {
-  //   //   setReturnHidden(false);
-  //   // }
-  //   },[step]);
+  const handleNext = () => {
+    if(name.length === 0 || personCode.length < 11 || !validateEmail(email) || phone.length < 11){
+      window.alert("Todos os campos devem ser preenchidos corretamente")
+      return
+    }
+
+    localStorage.setItem("name", name)
+    localStorage.setItem("person_code", personCode)
+    localStorage.setItem("email", email)
+    localStorage.setItem("phone", phone)
+    router.push("/RegisterCompanyInfo")
+  }
 
   return <div style={{
     display: "flex",
@@ -168,11 +165,12 @@ const Register: React.FC = () => {
           }}/>}
         />
       </div>
-      <Button text="Avançar" callback={window.location("/Register2")}/>
-      <Button text="Voltar" color="#009FB7" margin={10}/>
-      {/* {stepContent} */}
+      <Button 
+        text="Avançar" 
+        callback={()=>handleNext()}
+      />
     </div>
   </div>;
 }
 
-export default Register;
+export default RegisterPersonInfo;
