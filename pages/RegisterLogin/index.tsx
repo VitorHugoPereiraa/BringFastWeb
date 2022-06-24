@@ -5,8 +5,6 @@ import KeyIcon from '@mui/icons-material/Key';
 import PersonIcon from '@mui/icons-material/Person';
 import {useRouter} from 'next/router'
 
-// import { Container } from './styles';
-
 const RegisterLogin: React.FC = () => {
   const router = useRouter()
 
@@ -75,6 +73,7 @@ const RegisterLogin: React.FC = () => {
           }}/>}
         />
         <TextInput
+        type="password"
           value={password}
           callback={(e)=>{
             setPassword(e.target.value)
@@ -94,6 +93,7 @@ const RegisterLogin: React.FC = () => {
           }}/>}
         />
         <TextInput
+          type="password"
           value={passwordConfirm}
           callback={(e)=>{
             setPasswordConfirm(e.target.value)

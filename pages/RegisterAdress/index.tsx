@@ -13,20 +13,21 @@ const RegisterAdress: React.FC = () => {
     const [postalCodeError, setPostalCodeError] = useState(false)
     const [city, setCity] = useState('')
     const [road, setRoad] = useState('')
-    const [houseNumber, setHouseNumber] = useState()
+    const [houseNumber, setHouseNumber] = useState('')
 
     const router = useRouter()
 
     const handleNext = () => {
-        // if(nickname.length === 0 || code.length < 14 || companyName.length === 0){
-        //   window.alert("Todos os campos devem ser preenchidos corretamente")
-        //   return
-        // }
+        if(city.length === 0 || road.length === 0 || houseNumber.length === 0 || postalCode.replace(/[^0-9]/g, '').length < 8){
+          window.alert("Todos os campos devem ser preenchidos corretamente")
+          return
+        }
     
-        // localStorage.setItem("nickname", nickname)
-        // localStorage.setItem("code", code)
-        // localStorage.setItem("company_name", companyName)
-        // router.push("/RegisterAdress")
+        localStorage.setItem("city", city)
+        localStorage.setItem("road", road)
+        localStorage.setItem("house_number", houseNumber)
+        localStorage.setItem("postal_code", postalCode)
+        router.push("/RegisterLogin")
       }
 
   return <div style={{
@@ -82,10 +83,10 @@ const RegisterAdress: React.FC = () => {
             masked={true}
             mask={"00000-000"}
             callback={(value)=>{setPostalCode(value.replace(/[^0-9]/g, ''))
-              if(value.replace(/[^0-9]/g, '').length === 14 || value.replace(/[^0-9]/g, '').length === 0){
+              if(value.replace(/[^0-9]/g, '').length === 8 || value.replace(/[^0-9]/g, '').length === 0){
                   setPostalCodeError(false);
               }
-              else if(value.replace(/[^0-9]/g, '').length != 0 && value.replace(/[^0-9]/g, '').length < 14){
+              else if(value.replace(/[^0-9]/g, '').length != 0 && value.replace(/[^0-9]/g, '').length < 8){
                   setPostalCodeError(true);
               }}}
             error={postalCodeError}
@@ -118,7 +119,14 @@ const RegisterAdress: React.FC = () => {
         />
         <TextInput
             value={houseNumber}
-            callback={(e)=>setHouseNumber(e.target.value)}
+            callback={(e)=>{
+              if(!isNaN(e.target.value)){
+                setHouseNumber(e.target.value)
+              }
+              else{
+                return
+              }
+            }}
             placeholder="Número"
             margin="0 0 30px"
             icon={<p style={{

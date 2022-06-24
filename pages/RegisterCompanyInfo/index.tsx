@@ -106,7 +106,6 @@ const RegisterCompanyInfo: React.FC = () => {
             }}/>}
         />
         <TextInput
-            type={"number"}
             value={nickname}
             callback={(e)=>{setNickname(e.target.value)}}
             placeholder="Nome fantasia"
