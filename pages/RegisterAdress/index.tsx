@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../../components/Button';
 import { useRouter } from 'next/router';
+import TextInput from '../../components/TextInput';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import SignpostIcon from '@mui/icons-material/Signpost';
 
 // import { Container } from './styles';
 
 const RegisterAdress: React.FC = () => {
+    const [postalCode, setPostalCode] = useState('')
+    const [postalCodeError, setPostalCodeError] = useState(false)
+    const [city, setCity] = useState('')
+    const [road, setRoad] = useState('')
+    const [houseNumber, setHouseNumber] = useState()
+
     const router = useRouter()
 
     const handleNext = () => {
@@ -56,6 +66,68 @@ const RegisterAdress: React.FC = () => {
           marginLeft: 12,
           cursor: "pointer"
         }}>Login</span>
+      </div>
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: 370,
+      }}>
+        <p style={{
+            fontSize: 24,
+            margin: "10px 0 20px"
+          }}>Localização</p>
+        <TextInput
+            value={postalCode}
+            masked={true}
+            mask={"00000-000"}
+            callback={(value)=>{setPostalCode(value.replace(/[^0-9]/g, ''))
+              if(value.replace(/[^0-9]/g, '').length === 14 || value.replace(/[^0-9]/g, '').length === 0){
+                  setPostalCodeError(false);
+              }
+              else if(value.replace(/[^0-9]/g, '').length != 0 && value.replace(/[^0-9]/g, '').length < 14){
+                  setPostalCodeError(true);
+              }}}
+            error={postalCodeError}
+            placeholder="CEP"
+            margin="0 0 30px"
+            icon={<LocationOnOutlinedIcon style={{
+            width: 30,
+            height: 30,
+            }}/>}
+        />
+        <TextInput
+            value={city}
+            callback={(e)=>setCity(e.target.value)}
+            placeholder="Cidade"
+            margin="0 0 30px"
+            icon={<LocationCityIcon style={{
+            width: 30,
+            height: 30,
+            }}/>}
+        />
+        <TextInput
+            value={road}
+            callback={(e)=>setRoad(e.target.value)}
+            placeholder="Rua"
+            margin="0 0 30px"
+            icon={<SignpostIcon style={{
+            width: 30,
+            height: 30,
+            }}/>}
+        />
+        <TextInput
+            value={houseNumber}
+            callback={(e)=>setHouseNumber(e.target.value)}
+            placeholder="Número"
+            margin="0 0 30px"
+            icon={<p style={{
+              width: 18,
+              height: 24,
+              fontSize: 20,
+              textAlign: "center",
+            }}>Nº</p>}
+        />
       </div>
       <Button text="Avançar" callback={()=>handleNext()}/>
       <Button text="Voltar" color="#009FB7" margin={10} callback={()=>router.push('/RegisterPersonInfo')}/>

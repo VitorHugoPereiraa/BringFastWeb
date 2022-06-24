@@ -1,3 +1,4 @@
+import { PropaneSharp } from '@mui/icons-material';
 import React, {useState, useEffect} from 'react';
 import { IMaskInput } from 'react-imask';
 
@@ -10,6 +11,7 @@ interface Props {
     masked?: boolean
     mask?: string
     error?: boolean
+    type?: string
     value: string
     callback: any
 }
@@ -43,6 +45,7 @@ const TextInput: React.FC<Props> = (props: Props) => {
       </div>
       {props.masked 
       ? <IMaskInput
+        type={props.type ? props.type : "text"}
         mask={props.mask}
         value={props.value}
         style={{
@@ -51,8 +54,7 @@ const TextInput: React.FC<Props> = (props: Props) => {
           flex: 5,
           fontSize: 20,
           height: 30,
-        }} 
-        type="text"
+        }}
         placeholder={props.placeholder ? props.placeholder : ""}
         onAccept={props.callback}
       />
@@ -65,7 +67,7 @@ const TextInput: React.FC<Props> = (props: Props) => {
           fontSize: 20,
           height: 30,
         }} 
-        type="text"
+        type={props.type ? props.type : "text"}
         placeholder={props.placeholder ? props.placeholder : ""}
         onChange={props.callback}
       />}

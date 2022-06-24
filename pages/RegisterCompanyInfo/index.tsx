@@ -98,7 +98,6 @@ const RegisterCompanyInfo: React.FC = () => {
         <TextInput
             value={companyName}
             callback={(e)=>setCompanyName(e.target.value)}
-            error={codeError}
             placeholder="Razão social"
             margin="0 0 30px"
             icon={<BadgeOutlinedIcon style={{
@@ -107,6 +106,7 @@ const RegisterCompanyInfo: React.FC = () => {
             }}/>}
         />
         <TextInput
+            type={"number"}
             value={nickname}
             callback={(e)=>{setNickname(e.target.value)}}
             placeholder="Nome fantasia"
