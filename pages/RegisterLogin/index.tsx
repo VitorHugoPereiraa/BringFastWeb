@@ -13,6 +13,46 @@ const RegisterLogin: React.FC = () => {
   const [passwordError, setPasswordError] = useState(false)
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [passwordConfirmError, setPasswordConfirmErrror] = useState(false)
+  const [users, setUsers] = useState([])
+
+  const handleRegister = async () => {
+    if(login.length === 0 || password.length < 8 || password !== passwordConfirm){
+      window.alert("Todos os campos devem ser preenchidos corretamente")
+      return
+    }
+
+    await JSON.parse(localStorage.getItem("registered_users")) 
+      ? setUsers(JSON.parse(localStorage.getItem("registered_users"))) 
+      : []
+
+    let user = {
+      name: localStorage.getItem("name"),
+      code: localStorage.getItem("person_code"),
+      contacts: {
+        email: localStorage.getItem("email"),
+        phone: localStorage.getItem("phone"),
+      },
+      nickname: localStorage.getItem("nickname"),
+      company_code: localStorage.getItem("code"),
+      company_name: localStorage.getItem("company_name"),
+      address: {
+        city: localStorage.getItem("city"),
+        road: localStorage.getItem("road"),
+        number: localStorage.getItem("house_number"),
+        code: localStorage.getItem("postal_code"),
+      },
+      login,
+      password,
+    }
+
+    await setUsers((old)=>([...old, user]))
+
+    try{
+      await localStorage.setItem("registered_users", JSON.stringify(users))
+    } catch(err){
+      console.log(err)
+    }
+  }
 
   return <div style={{
     display: "flex",
@@ -45,7 +85,9 @@ const RegisterLogin: React.FC = () => {
           margin: "14px 0",
           fontSize: 16,
         }}>Já possui uma conta?</p>
-        <span style={{
+        <span 
+        onClick={()=>router.push('/Login')}
+        style={{
           textDecoration: "underline",
           color: "#009FB7",
           marginLeft: 12,
@@ -73,10 +115,11 @@ const RegisterLogin: React.FC = () => {
           }}/>}
         />
         <TextInput
-        type="password"
+          type="password"
           value={password}
           callback={(e)=>{
             setPassword(e.target.value)
+            console.log(password)
             if(password.length < 8){
                 setPasswordError(true)
             }
@@ -97,11 +140,13 @@ const RegisterLogin: React.FC = () => {
           value={passwordConfirm}
           callback={(e)=>{
             setPasswordConfirm(e.target.value)
+          }}
+          blur={()=>{
             if(password !== passwordConfirm){
-                setPasswordConfirmErrror(true)
+              setPasswordConfirmErrror(true)
             }
             else{
-                setPasswordConfirmErrror(false)
+              setPasswordConfirmErrror(false)
             }
           }}
           error={passwordConfirmError}
@@ -115,9 +160,9 @@ const RegisterLogin: React.FC = () => {
       </div>
       <Button 
         text="Cadastrar" 
-        callback={()=>console.log("confirm")}
+        callback={()=>handleRegister()}
       />
-      <Button text="Voltar" color="#009FB7" margin={10} callback={()=>router.push('/RegisterPersonInfo')}/>
+      <Button text="Voltar" color="#009FB7" margin={10} callback={()=>router.push('/RegisterAdress')}/>
     </div>
   </div>;;
 }

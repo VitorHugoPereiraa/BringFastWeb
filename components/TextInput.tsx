@@ -12,6 +12,7 @@ interface Props {
     mask?: string
     error?: boolean
     type?: string
+    blur?: any
     value: string
     callback: any
 }
@@ -70,6 +71,7 @@ const TextInput: React.FC<Props> = (props: Props) => {
         type={props.type ? props.type : "text"}
         placeholder={props.placeholder ? props.placeholder : ""}
         onChange={props.callback}
+        onBlur={props.blur}
       />}
   </div>;
 }

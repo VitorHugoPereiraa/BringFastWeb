@@ -61,7 +61,9 @@ const RegisterAdress: React.FC = () => {
           margin: "14px 0",
           fontSize: 16,
         }}>Já possui uma conta?</p>
-        <span style={{
+        <span 
+        onClick={()=>router.push('/Login')}
+        style={{
           textDecoration: "underline",
           color: "#009FB7",
           marginLeft: 12,
@@ -138,7 +140,7 @@ const RegisterAdress: React.FC = () => {
         />
       </div>
       <Button text="Avançar" callback={()=>handleNext()}/>
-      <Button text="Voltar" color="#009FB7" margin={10} callback={()=>router.push('/RegisterPersonInfo')}/>
+      <Button text="Voltar" color="#009FB7" margin={10} callback={()=>router.push('/RegisterCompanyInfo')}/>
     </div>
   </div>;;
 }

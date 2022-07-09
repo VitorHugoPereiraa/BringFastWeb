@@ -76,7 +76,9 @@ const RegisterPersonInfo: React.FC = () => {
           margin: "14px 0",
           fontSize: 16,
         }}>Já possui uma conta?</p>
-        <span style={{
+        <span 
+        onClick={()=>router.push('/Login')}
+        style={{
           textDecoration: "underline",
           color: "#009FB7",
           marginLeft: 12,
