@@ -22,7 +22,9 @@ const Navbar: React.FC = () => {
             marginRight: 20,
             cursor: "pointer",
         }}>Home</span>
-        <span style={{
+        <span 
+        onClick={()=>router.push("/DashMenu")} 
+        style={{
             color: "#fff",
             marginRight: 20,
             cursor: "pointer",
@@ -32,7 +34,9 @@ const Navbar: React.FC = () => {
             marginRight: 20,
             cursor: "pointer",
         }}>Mesas</span>
-        <span style={{
+        <span 
+        onClick={()=>router.push("/DashEmployees")}
+        style={{
             color: "#fff",
             cursor: "pointer",
         }}>Funcionários</span>

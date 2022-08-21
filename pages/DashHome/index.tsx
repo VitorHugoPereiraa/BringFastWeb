@@ -1,15 +1,101 @@
 import React from 'react';
 import Navbar from '../../components/Navbar';
 import { DataGrid } from '@mui/x-data-grid';
+import { idID } from '@mui/material/locale';
 
 // import { Container } from './styles';
 
 const DashHome: React.FC = () => {
-  const columns: GridColDef[] = [
+  const toReal = (value: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  }
+
+  const orders = [
+    {
+      id: 1,
+      name: 'John Doe',
+      value: 100,
+      status: '999',
+      details: {
+        note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
+        date: '2020-01-01',
+        food: [
+          'Pizza',
+          'Burger',
+          'Pasta',
+        ],
+        beaverages: [
+          'Coke',
+          'Fanta',
+          'Sprite',
+        ]
+      }
+    },
+    {
+      id: 2,
+      name: 'Gabriel Machado',
+      value: 200.50,
+      status: '000',
+      details: {
+        note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
+        date: '2020-01-01',
+        food: [
+          'Pizza',
+          'Burger',
+          'Pasta',
+          'Pizza',
+          'Burger',
+        ],
+        beaverages: [
+          'Coke',
+          'Fanta',
+        ],
+      }
+    }
+  ]
+
+  const columns = [
     { field: 'id', headerName: 'Id', flex: 1 },
     { field: 'employee', headerName: 'Funcionário', flex: 1 },
     { field: 'value', headerName: 'Valor', flex: 1 },
-    { field: 'status', headerName: 'Status', flex: 1},
+    { field: 'status', headerName: 'Status', flex: 1, renderCell: (params) => {
+      if(params.value === '999') {
+        return <div style={{
+          width: 150,
+          height: 30,
+          backgroundColor: "#009FB7",
+          color: "#fff",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 5,
+        }}>Finalizado</div>
+    } else if(params.value === '000') {
+      return <div style={{
+        width: 150,
+        height: 30,
+        backgroundColor: "#FF0000",
+        color: "#fff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 5,
+      }}>Cancelado</div>
+    } else {
+      return <div style={{
+        width: 150,
+        height: 30,
+        backgroundColor: "#FFA500",
+        color: "#fff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 5,
+      }}>Aberto</div>
+    }}},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
       <div style={{
         width: 150,
@@ -20,17 +106,25 @@ const DashHome: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
+        cursor: "pointer",
       }}>
         Ver detalhes
       </div>
     )},
   ];
 
-  const rows: GridRowsProp = [
-    { id: 1, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
-    { id: 1, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
-    { id: 1, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
-  ];
+  const rows = 
+    orders.map(order => ({ 
+      id: order.id, 
+      employee: order.name, 
+      value: toReal(order.value),
+      status: order.status, 
+      info: order.details 
+    }));
+    // { id: 3, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
+    // { id: 4, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
+    // { id: 5, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
+
 
   return <div style={{
       overflow: "hidden",
@@ -49,12 +143,13 @@ const DashHome: React.FC = () => {
       overflowY: "auto"
     }}>
       <h2 style={{
+        marginBottom: 25,
       }}>Seus pedidios:</h2>
       <DataGrid style={{
         margin: 0,
         padding: 0,
         width: "100%",
-        height: 800,
+        height: 500,
         backgroundColor: "#fff"
       }} rows={rows} columns={columns}/>
     </div>
