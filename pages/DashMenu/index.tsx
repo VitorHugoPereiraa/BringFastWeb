@@ -59,16 +59,16 @@ const DashMenu: React.FC = () => {
 
   const productsColumns = [
     { field: 'id', headerName: 'Id', flex: 1 },
-    { field: 'name', headerName: 'Nome', flex: 1 },
     { field: 'image', headerName: 'Imagem', flex: 1, renderCell: (params) => {
-        return <div style ={{
-            backgroundImage: `url(${params.value})`,
-            backgroundSize: 'cover',
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-        }}/>
+      return <div style ={{
+          backgroundImage: `url(${params.value})`,
+          backgroundSize: 'cover',
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+      }}/>
     }},
+    { field: 'name', headerName: 'Nome', flex: 1 },
     { field: 'value', headerName: 'Preço', flex: 1 },
     { field: 'discount', headerName: 'Desconto', flex: 1},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (

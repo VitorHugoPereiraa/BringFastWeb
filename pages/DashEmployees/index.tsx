@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar';
 import { DataGrid } from '@mui/x-data-grid';
 import { idID } from '@mui/material/locale';
 import Button from '../../components/Button';
-import NewProduct from '../../components/NewProduct';
+import NewEmployee from '../../components/NewEmployee';
 
 
 // import { Container } from './styles';
@@ -13,19 +13,18 @@ const DashEmployees: React.FC = () => {
   const [newProductShow, setNewProductShow] = React.useState(false);
   const [image, setImage] = React.useState(null);
 
-  const toReal = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(value);
+  const phoneFormating = (phoneNumber: number) => {
+    let phone = phoneNumber.toString()
+    return "("+phone.slice(0,2)+")"+phone.slice(2,7)+"-"+phone.slice(7,11) 
   }
 
-  const orders = [
+  const employees = [
     {
       id: 1,
-      name: 'X-Burguer',
-      image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.wallpapersdsc.net%2Fwp-content%2Fuploads%2F2016%2F09%2FJunk-Food-Pictures.jpg&f=1&nofb=1',
-      value: 13.99,
+      name: 'Fernando Souza de Foliassa',
+      image: 'https://pbs.twimg.com/profile_images/1509951338716798978/Vc9-o9c-_400x400.jpg',
+      email: "fernandimgameplay@gmail.com",
+      phone: 99999999999,
       details: {
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
         discount: 0.10,
@@ -34,9 +33,10 @@ const DashEmployees: React.FC = () => {
     },
     {
       id: 2,
-      image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.wallpapersdsc.net%2Fwp-content%2Fuploads%2F2016%2F09%2FJunk-Food-Pictures.jpg&f=1&nofb=1',
-      name: 'X-Salada',
-      value: 15.99,
+      image: 'https://images.tcdn.com.br/img/img_prod/671591/bola_futebol_de_society_extra_32_gomos_azure_05816_14615_1_3f7282f510322eccf7706847fe482987_20220519183414.jpg',
+      name: 'Jonas Jonico Jonase',
+      email: "jonas@jonas.jonas",
+      phone: 16997687163,
       details: {
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
         discount: 0.15,
@@ -45,9 +45,10 @@ const DashEmployees: React.FC = () => {
     },
     {
         id: 3,
-        image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.cybercook.com.br%2Fimagens%2Freceitas%2F818%2Fsuco-de-laranja-com-linhaca-1.jpeg&f=1&nofb=1",
-        name: 'Suco de laranja',
-        value: 15.99,
+        image: "https://i.pinimg.com/originals/25/bd/8b/25bd8b7f6e57cdfd17747b25d753b2ce.jpg",
+        name: 'Gigus Chadus II',
+        email: "canyouhearthesilence@gmail.com",
+        phone: 55985163548,
         details: {
           description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
           discount: 0.25,
@@ -59,18 +60,18 @@ const DashEmployees: React.FC = () => {
 
   const productsColumns = [
     { field: 'id', headerName: 'Id', flex: 1 },
-    { field: 'name', headerName: 'Nome', flex: 1 },
     { field: 'image', headerName: 'Imagem', flex: 1, renderCell: (params) => {
-        return <div style ={{
-            backgroundImage: `url(${params.value})`,
-            backgroundSize: 'cover',
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-        }}/>
+      return <div style ={{
+          backgroundImage: `url(${params.value})`,
+          backgroundSize: 'cover',
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+      }}/>
     }},
-    { field: 'value', headerName: 'Preço', flex: 1 },
-    { field: 'discount', headerName: 'Desconto', flex: 1},
+    { field: 'name', headerName: 'Nome', flex: 1 },
+    { field: 'email', headerName: 'E-mail', flex: 1 },
+    { field: 'phone', headerName: 'Telefone', flex: 1},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
       <div style={{
         width: 150,
@@ -89,18 +90,18 @@ const DashEmployees: React.FC = () => {
   ];
 
   const productsRows =
-    orders.map(order => ({ 
-      id: order.id, 
-      name: order.name,
-      image: order.image, 
-      value: toReal(order.value),
-      discount: order.details.discount*100+"%",
-      categoria: order.details.category,
-      info: order.details 
+    employees.map(employee => ({ 
+      id: employee.id, 
+      name: employee.name,
+      image: employee.image, 
+      email: employee.email,
+      phone: phoneFormating(employee.phone),
+      categoria: employee.details.category,
+      info: employee.details 
     }));
 
   return <>
-  <NewProduct show={newProductShow} setShow={setNewProductShow}/>
+  <NewEmployee show={newProductShow} setShow={setNewProductShow}/>
   <div style={{
       overflow: "hidden",
       backgroundColor: "#E3F2FD",
@@ -126,9 +127,9 @@ const DashEmployees: React.FC = () => {
       }}>
         <h2 style={{
             fontSize: 25,
-        }}>Seu cardápio:</h2>
+        }}>Funcionários:</h2>
         <Button 
-            text="+Adicionar produto" 
+            text="+Adicionar funcionário" 
             callback={() => {setNewProductShow(true)}}
             width={180}
             height={35}
