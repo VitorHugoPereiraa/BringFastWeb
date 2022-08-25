@@ -5,13 +5,14 @@ import { DataGrid } from '@mui/x-data-grid';
 import { idID } from '@mui/material/locale';
 import Button from '../../components/Button';
 import NewProduct from '../../components/NewProduct';
+import ShowProduct from '../../components/showProduct';
 
 
 // import { Container } from './styles';
 
 const DashMenu: React.FC = () => {
   const [newProductShow, setNewProductShow] = React.useState(false);
-  const [image, setImage] = React.useState(null);
+  const [showProduct, setShowProduct] = React.useState(false);
 
   const toReal = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -72,7 +73,9 @@ const DashMenu: React.FC = () => {
     { field: 'value', headerName: 'Preço', flex: 1 },
     { field: 'discount', headerName: 'Desconto', flex: 1},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
-      <div style={{
+      <div 
+      onClick={()=>setShowProduct(true)}
+      style={{
         width: 150,
         height: 30,
         backgroundColor: "#009FB7",
@@ -101,6 +104,7 @@ const DashMenu: React.FC = () => {
 
   return <>
   <NewProduct show={newProductShow} setShow={setNewProductShow}/>
+  <ShowProduct show={showProduct} setShow={setShowProduct}/>
   <div style={{
       overflow: "hidden",
       backgroundColor: "#E3F2FD",
