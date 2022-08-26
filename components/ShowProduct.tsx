@@ -1,4 +1,5 @@
 import React from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 
 // import { Container } from './styles';
 
@@ -17,7 +18,27 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
       width: "100vw",
       height: "100vh",
       backgroundColor: "#fff"
-  }}/>;
+  }}>
+    <div style={{
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "100%",
+      height: 100,
+      margin: "0 50px",
+    }}>
+      <p>blabla</p>
+      <CloseIcon 
+      onClick={()=>props.setShow(false)}
+      style={{
+        width: 50, 
+        height:50, 
+        color: "#c4c4c4",
+        cursor: "pointer",
+      }}
+      />
+    </div>
+  </div>;
 }
 
 export default ShowProduct;

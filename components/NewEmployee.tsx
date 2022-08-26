@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import CloseIcon from '@mui/icons-material/Close';
 import dynamic from 'next/dynamic';
 const Avatar = dynamic(
     () => import("react-avatar-edit"),
@@ -7,7 +8,6 @@ const Avatar = dynamic(
 )
 
 import { TextField } from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import Button from "./Button";
 
@@ -69,11 +69,13 @@ const NewEmployee: React.FC<Props> = (props: Props) => {
             color: "#2541B2"
         }}>
             <h2>Novo funcionário</h2>
-            <h2 
+            <CloseIcon 
             onClick={() => props.setShow(false)}
             style={{
                 cursor: "pointer",
-            }}>X</h2>
+                width: 35,
+                height: 35,
+            }}/>
         </div>
         <div style={{
             overflowY: "auto",

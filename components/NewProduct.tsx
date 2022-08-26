@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import dynamic from 'next/dynamic';
+import CloseIcon from '@mui/icons-material/Close';
 const Avatar = dynamic(
     () => import("react-avatar-edit"),
     {ssr: false}
@@ -21,6 +22,22 @@ interface Props {
 const NewProduct: React.FC<Props> = (props: Props) => {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [selected, setSelected] = useState("")
+    const [productValue, setProductValue] = useState()
+    const [discount, setDiscount] = useState(0)
+    const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
+
+    const categories = [
+        {
+            id: "1",
+            name: "Lanches",
+        },
+        {
+            id: "2",
+            name: "Bebidas",
+        }
+    ]
 
     const imageRead = (e: any) => {
         const reader = new FileReader();
@@ -69,11 +86,13 @@ const NewProduct: React.FC<Props> = (props: Props) => {
             color: "#2541B2"
         }}>
             <h2>Novo produto</h2>
-            <h2 
+            <CloseIcon 
             onClick={() => props.setShow(false)}
             style={{
                 cursor: "pointer",
-            }}>X</h2>
+                width: 35,
+                height: 35,
+            }}/>
         </div>
         <div style={{
             overflowY: "auto",
@@ -89,8 +108,24 @@ const NewProduct: React.FC<Props> = (props: Props) => {
                 alignItems: "center",
                 justifyContent: "space-evenly",
             }}>
-                <TextField style={{width: "100%", margin: "0 30px"}} label="Nome" variant='standard'/>
                 <TextField 
+                  value={name}
+                  onChange={(e)=>{
+                    setName(e.target.value.replaceAll(/[^a-zA-Z]+$/g, ""))
+                  }}  
+                  style={{width: "100%", margin: "0 30px"}} 
+                  label="Nome completo" 
+                  variant='standard'/>
+                <TextField
+                    value={productValue}
+                    onChange={(e)=>{
+                        console.log(e.target.value)
+                        if(!isNaN(e.target.value)){
+                            setProductValue(e.target.value)
+                        }else {
+                            return
+                        }
+                    }} 
                     InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -127,12 +162,38 @@ const NewProduct: React.FC<Props> = (props: Props) => {
                 alignItems: "center",
                 justifyContent: "space-evenly",
             }}>
-                <TextField style={{width: "100%", margin: "0 30px"}} label="Categoria" variant='standard'/>
                 <TextField 
-                style={{width: "100%", margin: "0 30px"}} 
-                label="Desconto" 
-                variant='standard'
-                InputProps={{
+                  style={{width: "100%", margin: "0 30px"}} 
+                  label="Categoria" 
+                  variant='standard'
+                  select
+                  SelectProps={{
+                    native: true,
+                  }}
+                  value={selected}
+                  onChange={(e)=>{
+                      if(e.target.value !== "default"){
+                        setSelected(e.target.value)
+                      }
+                    }}>
+                    <option value="default">Selecione uma categoria</option>
+                    {categories.map((category)=>{
+                        return <option style={{cursor: "pointer"}} value={category.name}>{category.name}</option>
+                    })}
+                </TextField>
+                <TextField 
+                  value={discount}
+                  onChange={(e)=>{
+                      if(!isNaN(e.target.value) && Number(e.target.value) <= 100){
+                        setDiscount(e.target.value.replace(".", ""))
+                      }else {
+                        return
+                      }
+                  }}
+                  style={{width: "100%", margin: "0 30px"}} 
+                  label="Desconto" 
+                  variant='standard'
+                  InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         %

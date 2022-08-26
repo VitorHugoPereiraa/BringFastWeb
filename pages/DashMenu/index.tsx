@@ -5,7 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { idID } from '@mui/material/locale';
 import Button from '../../components/Button';
 import NewProduct from '../../components/NewProduct';
-import ShowProduct from '../../components/showProduct';
+import ShowProduct from '../../components/ShowProduct';
 
 
 // import { Container } from './styles';

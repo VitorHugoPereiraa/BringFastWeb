@@ -48,7 +48,7 @@ const DashEmployees: React.FC = () => {
         image: "https://i.pinimg.com/originals/25/bd/8b/25bd8b7f6e57cdfd17747b25d753b2ce.jpg",
         name: 'Gigus Chadus II',
         email: "canyouhearthesilence@gmail.com",
-        phone: 55985163548,
+        phone: 11985163548,
         details: {
           description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
           discount: 0.25,
