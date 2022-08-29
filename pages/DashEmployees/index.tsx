@@ -11,7 +11,6 @@ import NewEmployee from '../../components/NewEmployee';
 
 const DashEmployees: React.FC = () => {
   const [newProductShow, setNewProductShow] = React.useState(false);
-  const [image, setImage] = React.useState(null);
 
   const phoneFormating = (phoneNumber: number) => {
     let phone = phoneNumber.toString()
@@ -25,11 +24,7 @@ const DashEmployees: React.FC = () => {
       image: 'https://pbs.twimg.com/profile_images/1509951338716798978/Vc9-o9c-_400x400.jpg',
       email: "fernandimgameplay@gmail.com",
       phone: 99999999999,
-      details: {
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 0.10,
-        category: 'Lanches',
-      }
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
     },
     {
       id: 2,
@@ -37,11 +32,7 @@ const DashEmployees: React.FC = () => {
       name: 'Jonas Jonico Jonase',
       email: "jonas@jonas.jonas",
       phone: 16997687163,
-      details: {
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 0.15,
-        category: 'Lanches',
-      }
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
     },
     {
         id: 3,
@@ -49,12 +40,7 @@ const DashEmployees: React.FC = () => {
         name: 'Gigus Chadus II',
         email: "canyouhearthesilence@gmail.com",
         phone: 11985163548,
-        details: {
-          description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-          discount: 0.25,
-          category: 'Suco',
-          beverage: true,
-        }
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
       }
   ]
 
@@ -96,8 +82,6 @@ const DashEmployees: React.FC = () => {
       image: employee.image, 
       email: employee.email,
       phone: phoneFormating(employee.phone),
-      categoria: employee.details.category,
-      info: employee.details 
     }));
 
   return <>
