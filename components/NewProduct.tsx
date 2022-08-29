@@ -111,7 +111,7 @@ const NewProduct: React.FC<Props> = (props: Props) => {
                 <TextField 
                   value={name}
                   onChange={(e)=>{
-                    setName(e.target.value.replaceAll(/[^a-zA-Z]+$/g, ""))
+                    setName(e.target.value.replaceAll(/[^a-zA-Z ]+$/g, ""))
                   }}  
                   style={{width: "100%", margin: "0 30px"}} 
                   label="Nome completo" 
@@ -121,7 +121,7 @@ const NewProduct: React.FC<Props> = (props: Props) => {
                     onChange={(e)=>{
                         console.log(e.target.value)
                         if(!isNaN(e.target.value)){
-                            setProductValue(e.target.value)
+                            setProductValue(e.target.value.replace(" ", ""))
                         }else {
                             return
                         }

@@ -13,6 +13,7 @@ import ShowProduct from '../../components/ShowProduct';
 const DashMenu: React.FC = () => {
   const [newProductShow, setNewProductShow] = React.useState(false);
   const [showProduct, setShowProduct] = React.useState(false);
+  const [selectedProduct, setSelectedProduct] = React.useState()
 
   const toReal = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -29,7 +30,7 @@ const DashMenu: React.FC = () => {
       value: 13.99,
       details: {
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 0.10,
+        discount: 10,
         category: 'Lanches',
       }
     },
@@ -40,7 +41,7 @@ const DashMenu: React.FC = () => {
       value: 15.99,
       details: {
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 0.15,
+        discount: 15,
         category: 'Lanches',
       }
     },
@@ -51,8 +52,8 @@ const DashMenu: React.FC = () => {
         value: 15.99,
         details: {
           description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-          discount: 0.25,
-          category: 'Suco',
+          discount: 25,
+          category: 'Bebidas',
           beverage: true,
         }
       }
@@ -74,7 +75,11 @@ const DashMenu: React.FC = () => {
     { field: 'discount', headerName: 'Desconto', flex: 1},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
       <div 
-      onClick={()=>setShowProduct(true)}
+      onClick={()=>{
+        console.log(params.row)
+        setSelectedProduct(params.row)
+        setShowProduct(true)
+      }}
       style={{
         width: 150,
         height: 30,
@@ -97,14 +102,14 @@ const DashMenu: React.FC = () => {
       name: order.name,
       image: order.image, 
       value: toReal(order.value),
-      discount: order.details.discount*100+"%",
+      discount: order.details.discount+"%",
       categoria: order.details.category,
       info: order.details 
     }));
 
   return <>
   <NewProduct show={newProductShow} setShow={setNewProductShow}/>
-  <ShowProduct show={showProduct} setShow={setShowProduct}/>
+  <ShowProduct show={showProduct}  setShow={setShowProduct} product={selectedProduct}/>
   <div style={{
       overflow: "hidden",
       backgroundColor: "#E3F2FD",
