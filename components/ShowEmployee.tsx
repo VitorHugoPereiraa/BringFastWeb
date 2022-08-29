@@ -15,13 +15,18 @@ interface Props {
 
 const ShowEmployee: React.FC<Props> = (props: Props) => {
   const [edit, setEdit] = useState(false)
-  const [selectedProduct, setSelectedProduct] = React.useState({
+  const [selectedEmployee, setSelectedEmployee] = React.useState({
     id: 0,
     name: '',
     image: '',
     email: "",
     phone: 0,
     description: "",
+    auth: {
+      login: "",
+      password: "",
+      passconfirm: ""
+    }
   })
 
 
@@ -29,15 +34,20 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
       let emp = props.employee
 
       if(emp){
-        setSelectedProduct({
+        setSelectedEmployee({
           id: emp.id,
           image: emp.image,
           name: emp.name,
-          email: emp.email
+          email: emp.email,
           description: emp.description,
+          auth: {
+            login: emp.login,
+            password: emp.password,
+            passconfirm: ""
+          }
         })
       }
-  },[props.employees])
+  },[props.employee])
 
   return <div style={{
       display: props.show ? "flex" : "none",
@@ -62,7 +72,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
       color: "#fff",
       fontSize: 20,
     }}>
-      <p>Seu produto</p>
+      <p>Funcionário:</p>
       <div style={{
         display: "flex",
         alignItems: "center",
@@ -118,7 +128,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
           width: 200,
           height: 200,
           margin: 25,
-          backgroundImage: selectedProduct.image ? `url(${selectedProduct.image})` : "",
+          backgroundImage: selectedEmployee.image ? `url(${selectedEmployee.image})` : "",
           backgroundSize: "cover",
           borderRadius: "50%",
         }}>
@@ -147,32 +157,25 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
           }}>
             <TextField 
               disabled={!edit}
-              value={selectedProduct.name}
+              value={selectedEmployee.name}
               label="Nome do produto" 
               variant="standard"
               style={{width: "100%", marginRight: 50}}
             />
-            <TextField
-                disabled={!edit}
-                value={selectedProduct.value}
-                onChange={(e)=>{
-                    console.log(e.target.value)
-                    if(!isNaN(e.target.value)){
-                      setSelectedProduct((old)=>({...old, value: e.target.value.replace(" ", "")}))
-                    }else {
-                      return
-                    }
-                }} 
-                InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        R$
-                      </InputAdornment>
-                    ),
-                  }}
-                style={{width: "100%"}} 
-                label="Preço" 
-                variant='standard'/>
+            <TextField 
+              disabled={!edit}
+              value={selectedEmployee.phone}
+              label="Telefone" 
+              variant="standard"
+              style={{width: "100%", marginRight: 50}}
+            />
+            <TextField 
+              disabled={!edit}
+              value={selectedEmployee.auth.login}
+              label="Login" 
+              variant="standard"
+              style={{width: "100%"}}
+            />
           </div>
           <div style={{
             display: "flex",
@@ -181,43 +184,27 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
           }}>
             <TextField 
               disabled={!edit}
-              select
-              value={selectedProduct.details.category}
-              label="Categoria" 
+              value={selectedEmployee.email}
+              label="E-mail" 
               variant="standard"
-              style={{width: "100%", marginRight: 50}}
-            >
-              {categories.map(category=>{
-                return <option style={{cursor: "pointer"}} value={category.name}>{category.name}</option>
-              })}
-            </TextField>
+              style={{width: "100%", marginRight: edit ? 50 : 0}}
+            />
             <TextField 
-                disabled={!edit}
-                value={selectedProduct.details.discount}
-                onChange={(e)=>{
-                    if(!isNaN(e.target.value) && Number(e.target.value) <= 100){
-                      setSelectedProduct((old)=>({
-                        ...old, 
-                        details: {
-                          ...old.details,
-                          discount: e.target.value,
-                        },
-                      }))
-                    }else {
-                      return
-                    }
-                }}
-                style={{width: "100%"}} 
-                label="Desconto" 
-                variant='standard'
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      %
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              disabled={!edit}
+              value={selectedEmployee.auth.password}
+              label="Password" 
+              variant="standard"
+              type="password"
+              style={{width: "100%", marginRight: 50, display: edit ? "flex" : "none"}}
+            />
+            <TextField 
+              disabled={!edit}
+              value={selectedEmployee.auth.passconfirm}
+              label="Passconfirm" 
+              variant="standard"
+              type="password"
+              style={{width: "100%", display: edit ? "flex" : "none"}}
+            />
           </div>
         </div>
       </div>
@@ -229,7 +216,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
       }}>
         <textarea 
             disabled={!edit}
-            value={selectedProduct.details.description}
+            value={selectedEmployee.description}
             style={{
               width: "90%",
               margin: 20,

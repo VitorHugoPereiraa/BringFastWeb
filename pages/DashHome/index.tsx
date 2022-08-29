@@ -1,11 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Navbar from '../../components/Navbar';
 import { DataGrid } from '@mui/x-data-grid';
 import { idID } from '@mui/material/locale';
+import ShowOrder from "../../components/ShowOrder"
 
 // import { Container } from './styles';
 
 const DashHome: React.FC = () => {
+  const [showOrder, setShowOrder] = React.useState(false)
+  const [selectedOrder, setSelectedOrder] = React.useState()
+
   const toReal = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -97,7 +101,12 @@ const DashHome: React.FC = () => {
       }}>Aberto</div>
     }}},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
-      <div style={{
+      <div 
+      onClick={()=>{
+        setSelectedOrder(params.row)
+        setShowOrder(true)
+      }}
+      style={{
         width: 150,
         height: 30,
         backgroundColor: "#009FB7",
@@ -136,6 +145,7 @@ const DashHome: React.FC = () => {
       alignItems: "center",
   }}>
     <Navbar/>
+    <ShowOrder show={showOrder} setShow={setShowOrder} order={selectedOrder}/>
     <div style={{
       padding: 100,
       width: "100vw",

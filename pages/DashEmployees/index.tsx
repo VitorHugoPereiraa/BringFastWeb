@@ -5,12 +5,15 @@ import { DataGrid } from '@mui/x-data-grid';
 import { idID } from '@mui/material/locale';
 import Button from '../../components/Button';
 import NewEmployee from '../../components/NewEmployee';
+import ShowEmployee from '../../components/ShowEmployee';
 
 
 // import { Container } from './styles';
 
 const DashEmployees: React.FC = () => {
   const [newProductShow, setNewProductShow] = React.useState(false);
+  const [showEmployee, setShowEmployee] = React.useState(false);
+  const [selectedEmployee, setSelectedEmployee] = React.useState();
 
   const phoneFormating = (phoneNumber: number) => {
     let phone = phoneNumber.toString()
@@ -21,10 +24,14 @@ const DashEmployees: React.FC = () => {
     {
       id: 1,
       name: 'Fernando Souza de Foliassa',
-      image: 'https://pbs.twimg.com/profile_images/1509951338716798978/Vc9-o9c-_400x400.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqtI3fkj833EYPDDNfb2iyJRj2A6zY-F1Bdw&usqp=CAU',
       email: "fernandimgameplay@gmail.com",
       phone: 99999999999,
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+      auth: {
+        login: "Nando Junior",
+        password: "discordo123"
+      }
     },
     {
       id: 2,
@@ -33,6 +40,10 @@ const DashEmployees: React.FC = () => {
       email: "jonas@jonas.jonas",
       phone: 16997687163,
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+      auth: {
+        login: "jonase",
+        password: "123456"
+      }
     },
     {
         id: 3,
@@ -41,6 +52,10 @@ const DashEmployees: React.FC = () => {
         email: "canyouhearthesilence@gmail.com",
         phone: 11985163548,
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+        auth: {
+          login: "RedPill",
+          password: "canyouseethedark"
+        }
       }
   ]
 
@@ -59,7 +74,12 @@ const DashEmployees: React.FC = () => {
     { field: 'email', headerName: 'E-mail', flex: 1 },
     { field: 'phone', headerName: 'Telefone', flex: 1},
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
-      <div style={{
+      <div 
+      onClick={()=>{
+        setSelectedEmployee(params.row)
+        setShowEmployee(true)
+      }}
+      style={{
         width: 150,
         height: 30,
         backgroundColor: "#009FB7",
@@ -86,6 +106,7 @@ const DashEmployees: React.FC = () => {
 
   return <>
   <NewEmployee show={newProductShow} setShow={setNewProductShow}/>
+  <ShowEmployee show={showEmployee} setShow={setShowEmployee} employee={selectedEmployee}/>
   <div style={{
       overflow: "hidden",
       backgroundColor: "#E3F2FD",

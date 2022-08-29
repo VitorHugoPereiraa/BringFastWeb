@@ -76,7 +76,6 @@ const DashMenu: React.FC = () => {
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
       <div 
       onClick={()=>{
-        console.log(params.row)
         setSelectedProduct(params.row)
         setShowProduct(true)
       }}
