@@ -49,7 +49,7 @@ const DashMenu: React.FC = () => {
         id: 3,
         image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.cybercook.com.br%2Fimagens%2Freceitas%2F818%2Fsuco-de-laranja-com-linhaca-1.jpeg&f=1&nofb=1",
         name: 'Suco de laranja',
-        value: 15.99,
+        value: 4.99,
         details: {
           description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
           discount: 25,
@@ -143,7 +143,8 @@ const DashMenu: React.FC = () => {
             fontSize={15}
         />
       </div>
-      <DataGrid style={{
+      <DataGrid 
+      style={{
         margin: 0,
         padding: 0,
         width: "100%",

@@ -25,17 +25,15 @@ const DashHome: React.FC = () => {
       status: '999',
       details: {
         note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-        date: '2020-01-01',
-        food: [
+        date: 1668312660000,
+        products: [
           'Pizza',
           'Burger',
           'Pasta',
-        ],
-        beaverages: [
           'Coke',
           'Fanta',
           'Sprite',
-        ]
+        ],
       }
     },
     {
@@ -45,15 +43,13 @@ const DashHome: React.FC = () => {
       status: '000',
       details: {
         note: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-        date: '2020-01-01',
-        food: [
+        date: 1651674617000,
+        products: [
           'Pizza',
           'Burger',
           'Pasta',
           'Pizza',
           'Burger',
-        ],
-        beaverages: [
           'Coke',
           'Fanta',
         ],
@@ -103,7 +99,7 @@ const DashHome: React.FC = () => {
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
       <div 
       onClick={()=>{
-        setSelectedOrder(params.row)
+        setSelectedOrder(params.value)
         setShowOrder(true)
       }}
       style={{
@@ -128,7 +124,7 @@ const DashHome: React.FC = () => {
       employee: order.name, 
       value: toReal(order.value),
       status: order.status, 
-      info: order.details 
+      info: order
     }));
     // { id: 3, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
     // { id: 4, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },

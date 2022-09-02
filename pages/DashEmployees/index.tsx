@@ -76,7 +76,7 @@ const DashEmployees: React.FC = () => {
     { field: 'info', headerName: 'Detalhes', flex: 1, renderCell: (params) => (
       <div 
       onClick={()=>{
-        setSelectedEmployee(params.row)
+        setSelectedEmployee(params.value)
         setShowEmployee(true)
       }}
       style={{
@@ -102,6 +102,7 @@ const DashEmployees: React.FC = () => {
       image: employee.image, 
       email: employee.email,
       phone: phoneFormating(employee.phone),
+      info: employee
     }));
 
   return <>

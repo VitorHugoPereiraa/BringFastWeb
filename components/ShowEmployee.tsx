@@ -32,6 +32,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
 
   useEffect(()=>{
       let emp = props.employee
+      console.log(props.employee)
 
       if(emp){
         setSelectedEmployee({
@@ -39,10 +40,11 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
           image: emp.image,
           name: emp.name,
           email: emp.email,
+          phone: emp.phone,
           description: emp.description,
           auth: {
-            login: emp.login,
-            password: emp.password,
+            login: emp.auth.login,
+            password: emp.auth.password,
             passconfirm: ""
           }
         })
