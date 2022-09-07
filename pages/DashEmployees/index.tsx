@@ -137,7 +137,7 @@ const DashEmployees: React.FC = () => {
         <Button 
             text="+Adicionar funcionário" 
             callback={() => {setNewProductShow(true)}}
-            width={180}
+            width={200}
             height={35}
             fontSize={15}
         />

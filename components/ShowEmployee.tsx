@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { emphasize, TextField } from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
+import { TextField } from '@mui/material';
+import InputMask from 'react-input-mask';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import EditIcon from '@mui/icons-material/Edit';
+import ChangeImage from './ChangeImage';
 
 // import { Container } from './styles';
 
@@ -14,7 +15,8 @@ interface Props {
 }
 
 const ShowEmployee: React.FC<Props> = (props: Props) => {
-  const [edit, setEdit] = useState(false)
+  const [edit, setEdit] = React.useState(false)
+  const [showChangeImage, setShowChangeImage] = React.useState(false)
   const [selectedEmployee, setSelectedEmployee] = React.useState({
     id: 0,
     name: '',
@@ -62,6 +64,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
       height: "100vh",
       backgroundColor: "#fff"
   }}>
+    <ChangeImage show={showChangeImage} setShow={setShowChangeImage}/>
     <div style={{
       backgroundColor: "#2541B2",
       display: "flex",
@@ -99,7 +102,10 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
           />
         }
         <CloseIcon 
-        onClick={()=>props.setShow(false)}
+        onClick={()=>{
+          props.setShow(false)
+          setEdit(false)
+        }}
         style={{
           width: 40, 
           height: 40, 
@@ -134,7 +140,9 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
           backgroundSize: "cover",
           borderRadius: "50%",
         }}>
-          <div style={{
+          <div 
+          onClick={()=>setShowChangeImage(true)}
+          style={{
             cursor: "pointer",
             display: edit ? "flex" : "none",
             alignItems: "center",
@@ -160,17 +168,36 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
             <TextField 
               disabled={!edit}
               value={selectedEmployee.name}
+              onChange={(e)=>{
+                setSelectedEmployee((old)=>({...old, name: e.target.value.replaceAll(/[^a-zA-Z ]+$/g, "")}))
+              }}
               label="Nome do produto" 
               variant="standard"
               style={{width: "100%", marginRight: 50}}
             />
-            <TextField 
-              disabled={!edit}
-              value={selectedEmployee.phone}
-              label="Telefone" 
-              variant="standard"
-              style={{width: "100%", marginRight: 50}}
-            />
+            {/* <InputMask 
+            mask="(99)99999-9999" 
+            value={selectedEmployee.phone} 
+            onChange={(e)=>{
+              setSelectedEmployee((old)=>({
+                ...old,
+                phone: e.target.value
+              }))
+            }}> */}
+              <TextField 
+                value={selectedEmployee.phone} 
+                disabled={!edit}
+                label="Telefone" 
+                variant="standard"
+                style={{width: "100%", marginRight: 50}}
+                onChange={(e)=>{
+                  setSelectedEmployee((old)=>({
+                    ...old,
+                    phone: e.target.value
+                  }))
+                }}
+              />
+            {/* </InputMask> */}
             <TextField 
               disabled={!edit}
               value={selectedEmployee.auth.login}

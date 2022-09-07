@@ -44,11 +44,35 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
       : newDate.getUTCMinutes()}`
   }
 
+  const handleStatus = (statusnum: string) => {
+    let status = {
+      name: "",
+      color: "",
+    }
+
+    switch (statusnum) {
+      case "999":
+        status = {
+          name: "Finalizado",
+          color: "#009FB7"
+        }
+        break;
+      case "000":
+        status = {
+          name: "Cancelado",
+          color: "#FF0000"
+        }
+        break;
+    }
+
+    return status
+  }
+
   const [selectedOrder, setSelectedOrder] = React.useState({
     id: 0,
       name: '',
-      value: 0,
-      status: '1010',
+      value: '',
+      status: "1010",
       details: {
         note: '',
         date: 0,
@@ -127,14 +151,68 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
         setSelectedOrder({
             id: order.id,
             name: order.name,
-            value: order.value,
+            value: toReal(order.value),
             status: order.status,
             details: order.details,
         })
       }
   },[props.order])
 
-  return <div style={{
+  return (<>
+  <style jsx>
+    {`
+      .body-container {
+        width: 100%; 
+        height: 100%;
+      }
+    
+      .main-container {
+        display: flex;
+        width: 100%;
+        min-height: 400px;
+        padding: 0 50px 30px;
+        overflow: auto;
+      }
+
+      .left-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      @media (min-width: 650px) {
+        .body-container {
+          overflow-y: hidden;
+        }
+
+        .left-main {
+          flex: 1;
+          font-size: 24px;
+        }
+      }
+
+      @media (max-width: 650px) {
+        .body-container {
+          overflow-y: auto;
+        }
+
+        .main-container {
+          flex-direction: column;
+          height: 100%;
+        }
+        
+        .left-main {
+          flex: 0.5;
+          font-size: 16px;
+        }
+
+        .product-table {
+          margin-top: 50px;
+        }
+      }
+    `}
+  </style>
+  <div style={{
       display: props.show ? "flex" : "none",
       flexDirection: "column",
       position: "absolute",
@@ -177,58 +255,79 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
         />
       </div>
     </div>
-    <div style={{width: "100%", height: "100%"}}>
-      <div style={{
-        display: "flex",
-        width: "70%",
-        height: 80,
-        margin: "50px 0 50px 50px",
-        alignItems: "center",
-        fontSize: 24,
-      }}>
-        <h2>Informações básicas:</h2>
-      </div>
+    <div className='body-container'>
       <div style={{
         display: "flex",
         width: "100%",
-        // height: "100%",
+        height: 80,
+        margin: "50px 0",
         padding: "0 50px",
-        // backgroundColor: "red"
+        alignItems: "center",
+        justifyContent: "space-between",
+        fontSize: 24,
       }}>
+        <h2>Informações básicas:</h2>
         <div style={{
           display: "flex",
-          flexDirection: "column",
-          flex: 1,
+          alignItems: "center",
         }}>
+          <p style={{marginRight: 10,}}>Status: </p>
           <div style={{
             display: "flex",
-            boxSizing: "border-box",
-            marginBottom: 50,
-            fontSize: 24,
-          }}>
-            <p style={{marginRight: 10}}>Nome:</p>
-            <p style={{marginRight: 10}}>{selectedOrder.name}</p>
-          </div>
-          <div style={{
-            display: "flex",
-            boxSizing: "border-box",
-            marginBottom: 50,
-            fontSize: 24,
-          }}>
-            <p style={{marginRight: 10}}>Data:</p>
-            <p style={{marginRight: 10}}>{dateFormating(selectedOrder.details.date)}</p>
-          </div>
-          <div style={{
-            display: "flex",
-            boxSizing: "border-box",
-            marginBottom: 50,
-            fontSize: 24,
-          }}>
-            <p style={{marginRight: 10}}>Horário:</p>
-            <p style={{marginRight: 10}}>{timeFormating(selectedOrder.details.date)}</p>
-          </div>
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: 16,
+            height: 35,
+            padding: "0 20px",
+            borderRadius: 5,
+            color: "#fff",
+            backgroundColor: handleStatus(selectedOrder.status).color,
+          }}><p>{handleStatus(selectedOrder.status).name}</p></div>
         </div>
-        <div style={{
+      </div>
+      <div className='main-container'>
+        <div className='left-main'>
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+          }}>
+            <div style={{
+              display: "flex",
+              boxSizing: "border-box",
+              marginBottom: 50,
+            }}>
+              <p style={{marginRight: 10}}>Nome:</p>
+              <p style={{marginRight: 10}}>{selectedOrder.name}</p>
+            </div>
+            <div style={{
+              display: "flex",
+              boxSizing: "border-box",
+              marginBottom: 50,
+            }}>
+              <p style={{marginRight: 10}}>Data:</p>
+              <p style={{marginRight: 10}}>{dateFormating(selectedOrder.details.date)}</p>
+            </div>
+            <div style={{
+              display: "flex",
+              boxSizing: "border-box",
+              marginBottom: 50,
+            }}>
+              <p style={{marginRight: 10}}>Horário:</p>
+              <p style={{marginRight: 10}}>{timeFormating(selectedOrder.details.date)}</p>
+            </div>
+          </div>
+          <div style={{
+              display: "flex",
+              boxSizing: "border-box",
+              marginBottom: 10,
+            }}>
+              <h2 style={{marginRight: 10}}>Valor total:</h2>
+              <h2 style={{marginRight: 10}}>{selectedOrder.value}</h2>
+            </div>
+        </div>
+        <div 
+        className="product-table"
+        style={{
           boxSizing: "border-box",
           display: "flex",
           flex: 1,
@@ -238,7 +337,7 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
             margin: 0,
             padding: 0,
             width: "80%",
-            height: 600,
+            height: "100%",
             backgroundColor: "#fff"
           }}
           columns={columns} 
@@ -246,7 +345,7 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
         </div>
       </div>
     </div>
-  </div>;
+  </div></>)
 }
 
 export default ShowProduct;

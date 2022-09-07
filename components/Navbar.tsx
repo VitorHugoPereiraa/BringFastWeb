@@ -37,7 +37,9 @@ const Navbar: React.FC = () => {
             marginRight: 20,
             cursor: "pointer",
         }}>Cardapio</span>
-        <span style={{
+        <span 
+        onClick={()=>router.push("/DashTables")}
+        style={{
             color: "#fff",
             marginRight: 20,
             cursor: "pointer",

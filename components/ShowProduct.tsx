@@ -4,6 +4,7 @@ import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import EditIcon from '@mui/icons-material/Edit';
+import ChangeImage from './ChangeImage';
 
 // import { Container } from './styles';
 
@@ -14,7 +15,8 @@ interface Props {
 }
 
 const ShowProduct: React.FC<Props> = (props: Props) => {
-  const [edit, setEdit] = useState(false)
+  const [showChangeImage, setShowChangeImage] = React.useState(false)
+  const [edit, setEdit] = React.useState(false)
   const [selectedProduct, setSelectedProduct] = React.useState({
     id: 0,
     image: "",
@@ -67,6 +69,7 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
       height: "100vh",
       backgroundColor: "#fff"
   }}>
+    <ChangeImage show={showChangeImage} setShow={setShowChangeImage}/>
     <div style={{
       backgroundColor: "#2541B2",
       display: "flex",
@@ -139,7 +142,9 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
           backgroundSize: "cover",
           borderRadius: "50%",
         }}>
-          <div style={{
+          <div 
+          onClick={()=>setShowChangeImage(true)}
+          style={{
             cursor: "pointer",
             display: edit ? "flex" : "none",
             alignItems: "center",
@@ -165,6 +170,9 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
             <TextField 
               disabled={!edit}
               value={selectedProduct.name}
+              onChange={(e)=>{
+                setSelectedProduct((old)=>({...old, name: e.target.value.replaceAll(/[^a-zA-Z ]+$/g, "")}))
+              }}
               label="Nome do produto" 
               variant="standard"
               style={{width: "100%", marginRight: 50}}
@@ -200,9 +208,21 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
               disabled={!edit}
               select
               value={selectedProduct.details.category}
+              onChange={(e)=>{
+                setSelectedProduct((old)=>({
+                  ...old,
+                  details: {
+                    ...old.details,
+                    category: e.target.value
+                  }
+                }))
+              }}
               label="Categoria" 
               variant="standard"
               style={{width: "100%", marginRight: 50}}
+              SelectProps={{
+                native: true,
+              }}
             >
               {categories.map(category=>{
                 return <option style={{cursor: "pointer"}} value={category.name}>{category.name}</option>
@@ -212,12 +232,12 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
                 disabled={!edit}
                 value={selectedProduct.details.discount}
                 onChange={(e)=>{
-                    if(!isNaN(e.target.value) && Number(e.target.value) <= 100){
+                    if(!isNaN(Number(e.target.value)) && Number(e.target.value) <= 100){
                       setSelectedProduct((old)=>({
                         ...old, 
                         details: {
                           ...old.details,
-                          discount: e.target.value,
+                          discount: Number(e.target.value),
                         },
                       }))
                     }else {
