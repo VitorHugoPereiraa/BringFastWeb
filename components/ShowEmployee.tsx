@@ -201,6 +201,13 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
             <TextField 
               disabled={!edit}
               value={selectedEmployee.auth.login}
+              onChange={(e)=>setSelectedEmployee((old)=>({
+                ...old,
+                auth: {
+                  ...old.auth,
+                  login: e.target.value
+                }
+              }))}
               label="Login" 
               variant="standard"
               style={{width: "100%"}}
@@ -214,6 +221,10 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
             <TextField 
               disabled={!edit}
               value={selectedEmployee.email}
+              onChange={(e)=>setSelectedEmployee((old)=>({
+                ...old,
+                email: e.target.value,
+              }))}
               label="E-mail" 
               variant="standard"
               style={{width: "100%", marginRight: edit ? 50 : 0}}
@@ -221,6 +232,13 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
             <TextField 
               disabled={!edit}
               value={selectedEmployee.auth.password}
+              onChange={(e)=>setSelectedEmployee((old)=>({
+                ...old,
+                auth: {
+                  ...old.auth,
+                  password: e.target.value
+                }
+              }))}
               label="Password" 
               variant="standard"
               type="password"
@@ -229,6 +247,13 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
             <TextField 
               disabled={!edit}
               value={selectedEmployee.auth.passconfirm}
+              onChange={(e)=>setSelectedEmployee((old)=>({
+                ...old,
+                auth: {
+                  ...old.auth,
+                  passconfirm: e.target.value
+                }
+              }))}
               label="Passconfirm" 
               variant="standard"
               type="password"
@@ -246,6 +271,10 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
         <textarea 
             disabled={!edit}
             value={selectedEmployee.description}
+            onChange={(e)=>setSelectedEmployee((old)=>({
+              ...old,
+              description: e.target.value,
+            }))}
             style={{
               width: "90%",
               margin: 20,

@@ -267,6 +267,13 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
         <textarea 
             disabled={!edit}
             value={selectedProduct.details.description}
+            onChange={(e)=>setSelectedProduct((old)=>({
+              ...old,
+              details: {
+                ...old.details,
+                description: e.target.value,
+              }
+            }))}
             style={{
               width: "90%",
               margin: 20,

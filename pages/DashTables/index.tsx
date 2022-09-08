@@ -6,14 +6,13 @@ import { idID } from '@mui/material/locale';
 import Button from '../../components/Button';
 import NewProduct from '../../components/NewProduct';
 import ShowProduct from '../../components/ShowProduct';
+import SingleInputAlert from '../../components/SingleInputAlert';
 
 
 // import { Container } from './styles';
 
 const DashTables: React.FC = () => {
-  const [newProductShow, setNewProductShow] = React.useState(false);
-  const [showProduct, setShowProduct] = React.useState(false);
-  const [selectedProduct, setSelectedProduct] = React.useState()
+  const [newTableShow, setNewTableShow] = React.useState(false);
 
   const toReal = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -38,7 +37,7 @@ const DashTables: React.FC = () => {
   ]
 
   const columns = [
-    { field: 'id', headerName: 'Id', flex: 1, headerAlign: 'center', align: 'center' },
+    { field: 'id', headerName: 'Identificador', flex: 1, headerAlign: 'center', align: 'center' },
   ];
 
   const rows =
@@ -47,6 +46,7 @@ const DashTables: React.FC = () => {
     }));
 
   return <>
+  <SingleInputAlert show={newTableShow} setShow={setNewTableShow}/>
   <div style={{
       overflow: "hidden",
       backgroundColor: "#E3F2FD",
@@ -75,7 +75,7 @@ const DashTables: React.FC = () => {
         }}>Suas mesas:</h2>
         <Button 
             text="+Adicionar Mesa" 
-            callback={() => {setNewProductShow(true)}}
+            callback={() => {setNewTableShow(true)}}
             width={170}
             height={35}
             fontSize={15}
