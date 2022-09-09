@@ -107,7 +107,10 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
           />
         }
         <CloseIcon 
-        onClick={()=>props.setShow(false)}
+        onClick={()=>{
+          setEdit(false)
+          props.setShow(false)
+        }}
         style={{
           width: 40, 
           height: 40, 
