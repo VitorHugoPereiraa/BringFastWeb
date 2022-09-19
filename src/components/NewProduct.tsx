@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import dynamic from "next/dynamic";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,7 +8,9 @@ import { TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import Button from "./Button";
-
+import { firebaseDatabase } from "../firebase";
+import { AuthContext } from "../context/AuthContext";
+import { parseCookies } from "nookies";
 // import { Container } from './styles';
 
 interface Props {
@@ -16,26 +18,36 @@ interface Props {
   setShow: any;
 }
 
+type CategoryData = {
+  name: string;
+  id: string;
+  _id: string;
+};
+
+type ProductData = {
+  _id: string;
+  name: string;
+  price: number;
+  discount: number;
+  image: string;
+  category: string;
+  description: string;
+  created_by: string;
+};
+
 const NewProduct: React.FC<Props> = (props: Props) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const { user } = useContext(AuthContext);
   const [selected, setSelected] = useState("");
-  const [productValue, setProductValue] = useState();
+  const [productValue, setProductValue] = useState<number | null>();
   const [discount, setDiscount] = useState(0);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
-  const categories = [
-    {
-      id: "1",
-      name: "Lanches",
-    },
-    {
-      id: "2",
-      name: "Bebidas",
-    },
-  ];
-
+  const [categories, setCategories] = useState<CategoryData[] | any[]>([]);
+  const productCategoryCollection =
+    firebaseDatabase.collection("product_category");
+  const productCollection = firebaseDatabase.collection("product");
   const imageRead = (e: any) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -51,6 +63,51 @@ const NewProduct: React.FC<Props> = (props: Props) => {
     },
     onDrop: (acceptedFiles) => imageRead(acceptedFiles),
   });
+
+  useEffect(() => {
+    (async () => {
+      const data = await productCategoryCollection.get();
+      let productCategories = data.docs.map((item) => item.data());
+      setCategories(productCategories);
+    })();
+  }, []);
+
+  const handleSubmit = async () => {
+    //Validar dados do input aqui
+    try {
+      const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+      let userLoggedObj = JSON.parse(userLoggedString);
+      let newDoc = productCollection.doc();
+
+      let payload: ProductData = {
+        _id: newDoc.id,
+        name,
+        price: productValue,
+        discount,
+        image,
+        category: selected,
+        description,
+        created_by: userLoggedObj._id,
+      };
+      console.log(payload);
+      await newDoc.set(payload);
+      setImage(null);
+      setPreview(null);
+      setSelected("");
+      setProductValue(0);
+      setDescription("");
+      setDiscount(0);
+      setName("");
+      props.setShow(false);
+      window.alert("Produto cadastrado com sucesso!");
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+      window.alert(
+        "Ocorreu um erro no cadastro do seu produto. Tente novamente!"
+      );
+    }
+  };
 
   return (
     <div
@@ -130,8 +187,8 @@ const NewProduct: React.FC<Props> = (props: Props) => {
               value={productValue}
               onChange={(e) => {
                 console.log(e.target.value);
-                if (!isNaN(e.target.value)) {
-                  setProductValue(e.target.value.replace(" ", ""));
+                if (!isNaN(Number(e.target.value))) {
+                  setProductValue(Number(e.target.value.replace(" ", "")));
                 } else {
                   return;
                 }
@@ -165,6 +222,8 @@ const NewProduct: React.FC<Props> = (props: Props) => {
                 padding: 10,
                 fontSize: 15,
               }}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div
@@ -194,7 +253,7 @@ const NewProduct: React.FC<Props> = (props: Props) => {
               <option value="default">Selecione uma categoria</option>
               {categories.map((category) => {
                 return (
-                  <option style={{ cursor: "pointer" }} value={category.name}>
+                  <option style={{ cursor: "pointer" }} value={category._id}>
                     {category.name}
                   </option>
                 );
@@ -203,8 +262,11 @@ const NewProduct: React.FC<Props> = (props: Props) => {
             <TextField
               value={discount}
               onChange={(e) => {
-                if (!isNaN(e.target.value) && Number(e.target.value) <= 100) {
-                  setDiscount(e.target.value.replace(".", ""));
+                if (
+                  !isNaN(Number(e.target.value)) &&
+                  Number(e.target.value) <= 100
+                ) {
+                  setDiscount(Number(e.target.value.replace(".", "")));
                 } else {
                   return;
                 }
@@ -277,7 +339,7 @@ const NewProduct: React.FC<Props> = (props: Props) => {
               margin: "10px 0",
             }}
           >
-            <Button text="Confirmar" />
+            <Button callback={handleSubmit} text="Confirmar" />
           </div>
         </div>
         <div

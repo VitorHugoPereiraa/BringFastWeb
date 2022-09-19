@@ -1,6 +1,6 @@
 import Router from "next/router";
-import { setCookie } from "nookies";
-import { createContext, useState } from "react";
+import { parseCookies, setCookie } from "nookies";
+import { createContext, useEffect, useState } from "react";
 import { firebaseDatabase } from "../firebase";
 import generateJWT from "../utils/generateJWT";
 import { comparePassword, hashPassword } from "../utils/hashPassword";
@@ -76,6 +76,9 @@ export function AuthProvider({ children }) {
       };
       setUser(loggedUser);
       setCookie(null, "BringFast.token", token, {
+        maxAge: 60 * 60 * 24, // 24 horas
+      });
+      setCookie(null, "BringFast.user", JSON.stringify(loggedUser), {
         maxAge: 60 * 60 * 24, // 24 horas
       });
       Router.push("/DashHome");

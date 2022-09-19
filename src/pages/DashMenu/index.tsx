@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar";
 import { DataGrid } from "@mui/x-data-grid";
@@ -8,14 +8,28 @@ import NewProduct from "../../components/NewProduct";
 import ShowProduct from "../../components/ShowProduct";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
+import { firebaseDatabase } from "../../firebase";
+import { AuthContext } from "../../context/AuthContext";
 
 // import { Container } from './styles';
 
+type ProductData = {
+  _id: string;
+  name: string;
+  price: number;
+  discount: number;
+  image: string;
+  category: string;
+  description: string;
+};
+
 const DashMenu: React.FC = () => {
+  const productCollection = firebaseDatabase.collection("product");
+  const { user } = useContext(AuthContext);
   const [newProductShow, setNewProductShow] = React.useState(false);
   const [showProduct, setShowProduct] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState();
-
+  const [products, setProducts] = React.useState<ProductData[]>([]);
   const toReal = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -117,16 +131,41 @@ const DashMenu: React.FC = () => {
     },
   ];
 
-  const productsRows = orders.map((order) => ({
-    id: order.id,
-    name: order.name,
-    image: order.image,
-    value: toReal(order.value),
-    discount: order.details.discount + "%",
-    categoria: order.details.category,
-    info: order.details,
+  const productsRows = products.map((product, index) => ({
+    id: index + 1,
+    _id: product._id,
+    name: product.name,
+    image: product.image,
+    value: toReal(product.price),
+    discount: product.discount + "%",
+    categoria: product.category,
+    info: product,
   }));
 
+  useEffect(() => {
+    (async () => {
+      const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+      let userLoggedObj = JSON.parse(userLoggedString);
+      let data = await productCollection
+        .where("created_by", "==", userLoggedObj?._id)
+        .get();
+      let prods = data.docs.map((item) => item.data());
+      setProducts(prods);
+    })();
+  }, []);
+  useEffect(() => {
+    if (!newProductShow) {
+      (async () => {
+        const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+        let userLoggedObj = JSON.parse(userLoggedString);
+        let data = await productCollection
+          .where("created_by", "==", userLoggedObj?._id)
+          .get();
+        let prods = data.docs.map((item) => item.data());
+        setProducts(prods);
+      })();
+    }
+  }, [newProductShow]);
   return (
     <>
       <NewProduct show={newProductShow} setShow={setNewProductShow} />
