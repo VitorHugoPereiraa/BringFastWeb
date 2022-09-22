@@ -37,48 +37,6 @@ const DashMenu: React.FC = () => {
     }).format(value);
   };
 
-  const orders = [
-    {
-      id: 1,
-      name: "X-Burguer",
-      image:
-        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.wallpapersdsc.net%2Fwp-content%2Fuploads%2F2016%2F09%2FJunk-Food-Pictures.jpg&f=1&nofb=1",
-      value: 13.99,
-      details: {
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 10,
-        category: "Lanches",
-      },
-    },
-    {
-      id: 2,
-      image:
-        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.wallpapersdsc.net%2Fwp-content%2Fuploads%2F2016%2F09%2FJunk-Food-Pictures.jpg&f=1&nofb=1",
-      name: "X-Salada",
-      value: 15.99,
-      details: {
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 15,
-        category: "Lanches",
-      },
-    },
-    {
-      id: 3,
-      image:
-        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.cybercook.com.br%2Fimagens%2Freceitas%2F818%2Fsuco-de-laranja-com-linhaca-1.jpeg&f=1&nofb=1",
-      name: "Suco de laranja",
-      value: 4.99,
-      details: {
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        discount: 25,
-        category: "Bebidas",
-        beverage: true,
-      },
-    },
-  ];
 
   const productsColumns = [
     { field: "id", headerName: "Id", flex: 1 },

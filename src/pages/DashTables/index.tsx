@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar";
 import { DataGrid } from "@mui/x-data-grid";
@@ -9,11 +9,13 @@ import ShowProduct from "../../components/ShowProduct";
 import SingleInputAlert from "../../components/SingleInputAlert";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
+import { firebaseDatabase } from "../../firebase";
 
 // import { Container } from './styles';
 
 const DashTables: React.FC = () => {
   const [newTableShow, setNewTableShow] = React.useState(false);
+  const [tablesToList, setTablesToList] = React.useState([]);
 
   const toReal = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -47,10 +49,20 @@ const DashTables: React.FC = () => {
     },
   ];
 
-  const rows = tables.map((table) => ({
+  const rows = tablesToList.map((table) => ({
     id: table.id,
   }));
 
+  useEffect(() => {
+    (async () => {
+    const placeCollection = firebaseDatabase.collection("places")
+    const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+    let userLoggedObj = JSON.parse(userLoggedString);
+    let data = await placeCollection.where("created_by", "==", userLoggedObj._id).get()
+    let placesCreatedByUser = data.docs.map(item => item.data())
+    setTablesToList(placesCreatedByUser)
+    })()
+  }, [])
   return (
     <>
       <SingleInputAlert show={newTableShow} setShow={setNewTableShow} />
