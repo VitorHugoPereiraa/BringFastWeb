@@ -6,6 +6,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import KeyIcon from "@mui/icons-material/Key";
 import FirstLoginMessage from "../../components/FirstLoginMessage";
 import { AuthContext } from "../../context/AuthContext";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -123,3 +125,18 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { ["BringFast.token"]: token } = parseCookies(ctx);
+  if (token) {
+    return {
+      redirect: {
+        destination: "/DashHome",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+};

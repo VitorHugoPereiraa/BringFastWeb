@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Navbar from "../../components/Navbar";
 import { DataGrid } from "@mui/x-data-grid";
@@ -8,6 +8,7 @@ import NewEmployee from "../../components/NewEmployee";
 import ShowEmployee from "../../components/ShowEmployee";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
+import { firebaseDatabase } from "../../firebase";
 
 // import { Container } from './styles';
 
@@ -15,6 +16,7 @@ const DashEmployees: React.FC = () => {
   const [newProductShow, setNewProductShow] = React.useState(false);
   const [showEmployee, setShowEmployee] = React.useState(false);
   const [selectedEmployee, setSelectedEmployee] = React.useState();
+  const [employees, setEmployees] = React.useState([]);
 
   const phoneFormating = (phoneNumber: number) => {
     let phone = phoneNumber.toString();
@@ -28,50 +30,50 @@ const DashEmployees: React.FC = () => {
     );
   };
 
-  const employees = [
-    {
-      id: 1,
-      name: "Fernando Souza de Foliassa",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqtI3fkj833EYPDDNfb2iyJRj2A6zY-F1Bdw&usqp=CAU",
-      email: "fernandimgameplay@gmail.com",
-      phone: 99999999999,
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-      auth: {
-        login: "Nando Junior",
-        password: "discordo123",
-      },
-    },
-    {
-      id: 2,
-      image:
-        "https://images.tcdn.com.br/img/img_prod/671591/bola_futebol_de_society_extra_32_gomos_azure_05816_14615_1_3f7282f510322eccf7706847fe482987_20220519183414.jpg",
-      name: "Jonas Jonico Jonase",
-      email: "jonas@jonas.jonas",
-      phone: 16997687163,
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-      auth: {
-        login: "jonase",
-        password: "123456",
-      },
-    },
-    {
-      id: 3,
-      image:
-        "https://i.pinimg.com/originals/25/bd/8b/25bd8b7f6e57cdfd17747b25d753b2ce.jpg",
-      name: "Gigus Chadus II",
-      email: "canyouhearthesilence@gmail.com",
-      phone: 11985163548,
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-      auth: {
-        login: "RedPill",
-        password: "canyouseethedark",
-      },
-    },
-  ];
+  // const employees = [
+  //   {
+  //     id: 1,
+  //     name: "Fernando Souza de Foliassa",
+  //     image:
+  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqtI3fkj833EYPDDNfb2iyJRj2A6zY-F1Bdw&usqp=CAU",
+  //     email: "fernandimgameplay@gmail.com",
+  //     phone: 99999999999,
+  //     description:
+  //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+  //     auth: {
+  //       login: "Nando Junior",
+  //       password: "discordo123",
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     image:
+  //       "https://images.tcdn.com.br/img/img_prod/671591/bola_futebol_de_society_extra_32_gomos_azure_05816_14615_1_3f7282f510322eccf7706847fe482987_20220519183414.jpg",
+  //     name: "Jonas Jonico Jonase",
+  //     email: "jonas@jonas.jonas",
+  //     phone: 16997687163,
+  //     description:
+  //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+  //     auth: {
+  //       login: "jonase",
+  //       password: "123456",
+  //     },
+  //   },
+  //   {
+  //     id: 3,
+  //     image:
+  //       "https://i.pinimg.com/originals/25/bd/8b/25bd8b7f6e57cdfd17747b25d753b2ce.jpg",
+  //     name: "Gigus Chadus II",
+  //     email: "canyouhearthesilence@gmail.com",
+  //     phone: 11985163548,
+  //     description:
+  //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
+  //     auth: {
+  //       login: "RedPill",
+  //       password: "canyouseethedark",
+  //     },
+  //   },
+  // ];
 
   const productsColumns = [
     { field: "id", headerName: "Id", flex: 1 },
@@ -124,15 +126,42 @@ const DashEmployees: React.FC = () => {
     },
   ];
 
-  const productsRows = employees.map((employee) => ({
-    id: employee.id,
-    name: employee.name,
-    image: employee.image,
+  const productsRows = employees.map((employee, index) => ({
+    id: index,
+    name: employee.fullName,
     email: employee.email,
     phone: phoneFormating(employee.phone),
+    image: employee.photo,
     info: employee,
   }));
 
+  useEffect(() => {
+    (async () => {
+      const employeeCollection = firebaseDatabase.collection("employees");
+      const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+      let userLoggedObj = JSON.parse(userLoggedString);
+      let data = await employeeCollection
+        .where("company", "==", userLoggedObj._id)
+        .get();
+      let employeesByCompany = data.docs.map((item) => item.data());
+      setEmployees(employeesByCompany);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!newProductShow) {
+      (async () => {
+        const employeeCollection = firebaseDatabase.collection("employees");
+        const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+        let userLoggedObj = JSON.parse(userLoggedString);
+        let data = await employeeCollection
+          .where("company", "==", userLoggedObj?._id)
+          .get();
+        let emp = data.docs.map((item) => item.data());
+        setEmployees(emp);
+      })();
+    }
+  }, [newProductShow]);
   return (
     <>
       <NewEmployee show={newProductShow} setShow={setNewProductShow} />

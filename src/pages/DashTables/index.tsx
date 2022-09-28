@@ -24,21 +24,6 @@ const DashTables: React.FC = () => {
     }).format(value);
   };
 
-  const tables = [
-    {
-      _id: 1,
-      id: "Entrada",
-    },
-    {
-      _id: 2,
-      id: "Recepção",
-    },
-    {
-      _id: 3,
-      id: "Arvores",
-    },
-  ];
-
   const columns = [
     {
       field: "id",
@@ -55,14 +40,30 @@ const DashTables: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-    const placeCollection = firebaseDatabase.collection("places")
-    const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
-    let userLoggedObj = JSON.parse(userLoggedString);
-    let data = await placeCollection.where("created_by", "==", userLoggedObj._id).get()
-    let placesCreatedByUser = data.docs.map(item => item.data())
-    setTablesToList(placesCreatedByUser)
-    })()
-  }, [])
+      const placeCollection = firebaseDatabase.collection("places");
+      const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+      let userLoggedObj = JSON.parse(userLoggedString);
+      let data = await placeCollection
+        .where("created_by", "==", userLoggedObj._id)
+        .get();
+      let placesCreatedByUser = data.docs.map((item) => item.data());
+      setTablesToList(placesCreatedByUser);
+    })();
+  }, []);
+  useEffect(() => {
+    if (!newTableShow) {
+      (async () => {
+        const placeCollection = firebaseDatabase.collection("places");
+        const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+        let userLoggedObj = JSON.parse(userLoggedString);
+        let data = await placeCollection
+          .where("created_by", "==", userLoggedObj?._id)
+          .get();
+        let places = data.docs.map((item) => item.data());
+        setTablesToList(places);
+      })();
+    }
+  }, [newTableShow]);
   return (
     <>
       <SingleInputAlert show={newTableShow} setShow={setNewTableShow} />
