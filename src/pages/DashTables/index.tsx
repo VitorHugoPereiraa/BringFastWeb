@@ -123,6 +123,7 @@ const DashTables: React.FC = () => {
             }}
             rows={rows}
             columns={columns}
+            onRowClick={(e) => console.log(e)}
           />
         </div>
       </div>

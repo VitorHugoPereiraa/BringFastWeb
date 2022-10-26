@@ -89,7 +89,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
             height: "100%",
           }}
         >
-          {edit ? (
+          {/* {edit ? (
             <EditIcon
               style={{
                 width: 35,
@@ -107,7 +107,7 @@ const ShowEmployee: React.FC<Props> = (props: Props) => {
               }}
               onClick={() => setEdit(!edit)}
             />
-          )}
+          )} */}
           <CloseIcon
             onClick={() => {
               props.setShow(false);
