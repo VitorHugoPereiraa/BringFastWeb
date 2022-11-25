@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
         paddingInline: 40,
       }}
     >
-      {/* <div><Image src={Logo} width={150} /></div> */}
+      <div>{/* <Image src={Logo} width={150} /> */}</div>
       <div
         style={{
           display: "flex",
