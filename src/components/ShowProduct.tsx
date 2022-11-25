@@ -210,7 +210,7 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
                 value={selectedProduct.value}
                 onChange={(e) => {
                   console.log(e.target.value);
-                  if (!isNaN(e.target.value)) {
+                  if (!isNaN(Number(e.target.value))) {
                     setSelectedProduct((old) => ({
                       ...old,
                       value: e.target.value.replace(" ", ""),
