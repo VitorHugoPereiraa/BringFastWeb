@@ -44,6 +44,7 @@ const SingleInputAlert: React.FC<Props> = (props: Props) => {
       id: name,
       created_by: userLoggedObj._id,
       status: 1,
+      active_order: "",
     };
 
     try {

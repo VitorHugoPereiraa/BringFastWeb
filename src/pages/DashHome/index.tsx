@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { DataGrid } from "@mui/x-data-grid";
 import { idID } from "@mui/material/locale";
 import ShowOrder from "../../components/ShowOrder";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
+import { firebaseDatabase } from "../../firebase";
 
 // import { Container } from './styles';
 
 const DashHome: React.FC = () => {
   const [showOrder, setShowOrder] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState();
+  const [orders, setOrders] = React.useState([]);
+
+  useEffect(() => {
+    (async () => {
+      //Buscar pedidos da empresa
+      const ordersCollection = firebaseDatabase.collection("orders");
+      const { ["BringFast.user"]: userLoggedString } = parseCookies(null);
+      let userLoggedObj = JSON.parse(userLoggedString);
+      console.log(userLoggedObj._id);
+      let data = await ordersCollection
+        .where("company", "==", userLoggedObj._id)
+        .get();
+      let orderCreatedByUser = data.docs.map((item) => item.data());
+      setOrders(orderCreatedByUser);
+    })();
+  }, []);
 
   const toReal = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -19,49 +36,15 @@ const DashHome: React.FC = () => {
     }).format(value);
   };
 
-  const orders = [
-    {
-      id: 1,
-      name: "John Doe",
-      value: 100,
-      status: "999",
-      details: {
-        note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        date: 1668312660000,
-        products: ["Pizza", "Burger", "Pasta", "Coke", "Fanta", "Sprite"],
-      },
-    },
-    {
-      id: 2,
-      name: "Gabriel Machado",
-      value: 200.5,
-      status: "000",
-      details: {
-        note: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.",
-        date: 1651674617000,
-        products: [
-          "Pizza",
-          "Burger",
-          "Pasta",
-          "Pizza",
-          "Burger",
-          "Coke",
-          "Fanta",
-        ],
-      },
-    },
-  ];
-
   const columns = [
     { field: "id", headerName: "Id", flex: 1 },
-    { field: "employee", headerName: "Funcionário", flex: 1 },
     { field: "value", headerName: "Valor", flex: 1 },
     {
       field: "status",
       headerName: "Status",
       flex: 1,
       renderCell: (params) => {
-        if (params.value === "999") {
+        if (params.value === 0) {
           return (
             <div
               style={{
@@ -78,7 +61,7 @@ const DashHome: React.FC = () => {
               Finalizado
             </div>
           );
-        } else if (params.value === "000") {
+        } else if (params.value === 2) {
           return (
             <div
               style={{
@@ -143,16 +126,14 @@ const DashHome: React.FC = () => {
     },
   ];
 
-  const rows = orders.map((order) => ({
-    id: order.id,
-    employee: order.name,
+  const rows = orders.map((order, key) => ({
+    id: key + 1,
+    _id: order._id,
+    employee: order.employee,
     value: toReal(order.value),
     status: order.status,
     info: order,
   }));
-  // { id: 3, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
-  // { id: 4, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
-  // { id: 5, employee: 'Jonas', value: 'R$100,00', status: 999, info: 'info' },
 
   return (
     <div
@@ -167,11 +148,14 @@ const DashHome: React.FC = () => {
       }}
     >
       <Navbar />
-      <ShowOrder
-        show={showOrder}
-        setShow={setShowOrder}
-        order={selectedOrder}
-      />
+      {showOrder && (
+        <ShowOrder
+          show={showOrder}
+          setShow={setShowOrder}
+          order={selectedOrder}
+        />
+      )}
+
       <div
         style={{
           padding: 100,

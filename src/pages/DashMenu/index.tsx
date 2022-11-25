@@ -37,7 +37,6 @@ const DashMenu: React.FC = () => {
     }).format(value);
   };
 
-
   const productsColumns = [
     { field: "id", headerName: "Id", flex: 1 },
     {
