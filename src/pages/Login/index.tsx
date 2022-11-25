@@ -119,6 +119,14 @@ const Login: React.FC = () => {
           />
         </div>
         <Button callback={() => handleLogin()} text="Login" />
+
+        <a
+          style={{ marginTop: 20 }}
+          href="/apk/BringFastApp.apk"
+          download="BringFastApp"
+        >
+          Quero baixar o app da BringFast!
+        </a>
       </div>
     </div>
   );

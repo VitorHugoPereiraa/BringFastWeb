@@ -21,6 +21,7 @@
     "bcryptjs": "^2.4.3",
     "consultar-cnpj": "^1.0.15",
     "firebase": "^9.9.4",
+    "js-file-download": "^0.4.12",
     "jsonwebtoken": "^8.5.1",
     "next": "12.1.6",
     "next-qrcode": "^2.2.2",

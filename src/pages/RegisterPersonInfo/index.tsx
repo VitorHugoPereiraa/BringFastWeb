@@ -221,6 +221,13 @@ const RegisterPersonInfo: React.FC = () => {
           />
         </div>
         <Button text="Avançar" callback={() => handleNext()} />
+        <a
+          style={{ marginTop: 20 }}
+          href="/apk/BringFastApp.apk"
+          download="BringFastApp"
+        >
+          Quero baixar o app da BringFast!
+        </a>
       </div>
     </div>
   );
