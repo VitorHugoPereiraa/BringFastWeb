@@ -127,7 +127,7 @@ const DashEmployees: React.FC = () => {
   ];
 
   const productsRows = employees.map((employee, index) => ({
-    id: index,
+    id: index + 1,
     name: employee.fullName,
     email: employee.email,
     phone: phoneFormating(employee.phone),

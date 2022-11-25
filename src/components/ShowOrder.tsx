@@ -20,23 +20,24 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
   const [edit, setEdit] = useState(false);
   const [employee, setEmployee] = useState<any>({});
   const [products, setProducts] = useState<any>([]);
+  const [places, setPlaces] = useState<any>({});
 
   useEffect(() => {
     (async () => {
       //Buscar funcionario
-      console.log("Chamou");
       const employeesCollections = firebaseDatabase.collection("employees");
       const productCollections = firebaseDatabase.collection("product");
+      const placesCollections = firebaseDatabase.collection("places");
       let employeeSnap = await employeesCollections
         .doc(props.order.employee)
         .get();
-
+      let placesSnap = await placesCollections.doc(props.order.place).get();
       let prodsArray = [];
       for (let prod of props.order.products) {
         let prodSnap = await productCollections.doc(prod).get();
         prodsArray.push(prodSnap.data());
       }
-      console.log(prodsArray);
+      setPlaces(placesSnap.data());
       setProducts(prodsArray);
       setEmployee(employeeSnap.data());
     })();
@@ -267,6 +268,16 @@ const ShowProduct: React.FC<Props> = (props: Props) => {
                 >
                   <p style={{ marginRight: 10 }}>Funcionário:</p>
                   <p style={{ marginRight: 10 }}>{employee?.fullName}</p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    boxSizing: "border-box",
+                    marginBottom: 50,
+                  }}
+                >
+                  <p style={{ marginRight: 10 }}>Mesa:</p>
+                  <p style={{ marginRight: 10 }}>{places.id}</p>
                 </div>
                 <div
                   style={{
