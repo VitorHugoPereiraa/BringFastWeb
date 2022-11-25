@@ -5,7 +5,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import ExitToApp from "@mui/icons-material/ExitToApp";
 import { outlinedInputClasses } from "@mui/material";
 import { Tooltip } from "@mui/material";
-import Logo from "../images/logo.svg";
 import { destroyCookie } from "nookies";
 
 const Navbar: React.FC = () => {
@@ -28,7 +27,7 @@ const Navbar: React.FC = () => {
         paddingInline: 40,
       }}
     >
-      <div><Image src={Logo} width={150} /></div>
+      {/* <div><Image src={Logo} width={150} /></div> */}
       <div
         style={{
           display: "flex",
