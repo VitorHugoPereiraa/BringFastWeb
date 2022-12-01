@@ -6,6 +6,7 @@ import ExitToApp from "@mui/icons-material/ExitToApp";
 import { outlinedInputClasses } from "@mui/material";
 import { Tooltip } from "@mui/material";
 import { destroyCookie } from "nookies";
+import Logo from '../../public/images/Logo.svg'
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const Navbar: React.FC = () => {
         paddingInline: 40,
       }}
     >
-      <div>{/* <Image src={Logo} width={150} /> */}</div>
+      <div><Image src={Logo} width={150}/></div>
       <div
         style={{
           display: "flex",
